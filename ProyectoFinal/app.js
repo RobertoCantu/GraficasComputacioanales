@@ -1,5 +1,7 @@
 import * as THREE from './node_modules/three/build/three.module.js'
 
+
+  
 function main(){
     const canvas = document.querySelector("#root");
     const renderer = new THREE.WebGLRenderer({canvas});
@@ -30,8 +32,20 @@ function main(){
     //Add mesh to the scene
     scene.add(cube);
 
-    renderer.render(scene,camera);
+    function render(time) {
+        time *= 0.001;  // convert time to seconds
+    
+        cube.rotation.x = time;
+        cube.rotation.y = time;
+    
+        renderer.render(scene, camera);
+    
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
     
 }
+
+
 
 main();
