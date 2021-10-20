@@ -12,8 +12,8 @@ function main(){
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
-    camera.position.set(4,2.5,7.5); // Set position like this
-    camera.lookAt(new THREE.Vector3(0,0,0)); // Set look at coordinate like this
+    camera.position.set(4,2.5,7.5); 
+    camera.lookAt(new THREE.Vector3(0,0,0)); 
     console.log(aspect);
     //camera.position.set(0,1.8,-5);
     // camera.lookAt(new THREE.Vector3(0,0,0));
@@ -69,10 +69,10 @@ const graveMaterial = new THREE.MeshBasicMaterial({ color: '#b2b6b1' })
 
 for(let i = 0; i < 50; i++)
 {
-    const angle = Math.random() * Math.PI * 2 // Random angle
-    const radius = 3 + Math.random() * 6      // Random radius
-    const x = Math.cos(angle) * radius        // Get the x position using cosinus
-    const z = Math.sin(angle) * radius        // Get the z position using sinus
+    const angle = Math.random() * Math.PI * 2 
+    const radius = 3 + Math.random() * 6      
+    const x = Math.cos(angle) * radius        
+    const z = Math.sin(angle) * radius        
 
     // Create the mesh
     const grave = new THREE.Mesh(graveGeometry, graveMaterial)
