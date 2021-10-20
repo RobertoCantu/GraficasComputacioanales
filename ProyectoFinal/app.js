@@ -8,7 +8,7 @@ function main(){
 
     //Set up camera
     const fov = 75;
-    const aspect = 2;
+    const aspect = window.innerWidth/window.innerHeight;
     const near = 0.1;
     const far = 5;
     const camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
