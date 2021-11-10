@@ -6,6 +6,8 @@ import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources
 function main(){
     const canvas = document.querySelector("#root");
     const renderer = new THREE.WebGLRenderer({canvas});
+    const color = 'lightblue';
+    renderer.setClearColor('#262837')
     
     document.body.appendChild( renderer.domElement );
     
@@ -16,7 +18,7 @@ function main(){
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
-    camera.position.set(0,2.5,7.5); 
+    camera.position.set(0,2.5,10); 
     //camera.position.z = 100
     camera.lookAt(new THREE.Vector3(0,0,0)); 
     console.log(aspect);
@@ -28,9 +30,38 @@ function main(){
     //Add orbit controls for better view
     const controls = new OrbitControls(camera, renderer.domElement);
 
-    const scene = new THREE.Scene();
-    
     //Create scene
+    const scene = new THREE.Scene();
+
+    //Add Fog
+    
+    scene.fog = new THREE.FogExp2(color, 0.06);
+    //scene.background = new THREE.Color(color);
+
+    //Add backgorund color
+    //scene.background = new THREE.Color('#F00');  // red
+
+    //Add light
+    const ambient = new THREE.AmbientLight(0x555555);
+    scene.add(ambient);
+
+    //Add some fog
+    //scene.fog = new THREE.Fog(0xDFE9F3, 0.0, 500.0);
+    
+    
+
+    //Sky 
+  //   const sky = new THREE.Mesh(
+  //     new THREE.SphereGeometry(10000, 32, 32),
+  //     new THREE.MeshBasicMaterial({
+  //         color: 0x8080FF,
+  //         side: THREE.BackSide,
+  //     })
+  // );
+  //sky.material.onBeforeCompile = ModifyShader_;
+  //scene.add(sky);
+    
+    
     //Create floor
     let texture = new THREE.TextureLoader().load('img/floor.jpg')
     texture.wrapS = THREE.RepeatWrapping;
@@ -38,10 +69,12 @@ function main(){
     texture.repeat.set(4, 4);
     const meshFloor = new THREE.Mesh(
       new THREE.PlaneGeometry(20,15,10,10),
-      new THREE.MeshBasicMaterial({map:texture, wireframe:false})
+      new THREE.MeshPhongMaterial({map:texture, wireframe:false})
     );
     meshFloor.rotation.x -= Math.PI /2;
     scene.add(meshFloor);
+   
+
 
     //House container
      const house = new THREE.Group()
@@ -80,6 +113,18 @@ door.position.z = 2 + 0.01
 house.add(door)
 
 //Window
+let glassTexture = new THREE.TextureLoader().load('img/glass.png')
+const glass = new THREE.Mesh(
+  new THREE.PlaneBufferGeometry(1.5,1.5),
+  new THREE.MeshBasicMaterial({color: '#aa7b7b', map: glassTexture})
+)
+
+//window.position.z = 3
+glass.rotation.y += Math.PI / 2
+glass.position.x = 2.05
+glass.position.z= 0;
+glass.position.y = 1.5;
+house.add(glass);
 
 // Graves
 const graves = new THREE.Group()
@@ -147,6 +192,7 @@ for(let i = 0; i < 50; i++)
     
     //animate();
     //renderer.render(scene, camera);
+    //scene.fog = new THREE.FogExp2(0xDFE9F3,0.0000005);
     function animate() {
 
       requestAnimationFrame( animate );
@@ -158,6 +204,7 @@ for(let i = 0; i < 50; i++)
       controls.update();
     }
     animate();
+   
 }
 
 main();
