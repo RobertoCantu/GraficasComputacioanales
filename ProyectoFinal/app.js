@@ -7,7 +7,7 @@ function main(){
     const canvas = document.querySelector("#root");
     const renderer = new THREE.WebGLRenderer({canvas});
     const color = 'lightblue';
-    renderer.setClearColor('#262837')
+    //renderer.setClearColor('#262837')
     
     document.body.appendChild( renderer.domElement );
     
@@ -32,6 +32,16 @@ function main(){
 
     //Create scene
     const scene = new THREE.Scene();
+
+   scene.background = new THREE.CubeTextureLoader()
+   .load([
+    'img/posx.png',
+    'img/negx.png',
+    'img/posy.png',
+    'img/negy.png',
+    'img/posz.png',
+    'img/negz.png',
+   ])
 
     //Add Fog
     
@@ -108,6 +118,7 @@ roof.position.y = 2.5 + 0.5
 house.add(roof)
 
 // Door
+let test = new THREE.TextureLoader().load('img/negx.png')
 let doorTexture = new THREE.TextureLoader().load('img/door.jpg');
 const door = new THREE.Mesh(
   new THREE.PlaneBufferGeometry(2, 2),
