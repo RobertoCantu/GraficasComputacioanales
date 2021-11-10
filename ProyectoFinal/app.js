@@ -45,6 +45,11 @@ function main(){
     const ambient = new THREE.AmbientLight(0x555555);
     scene.add(ambient);
 
+    //Moonlight
+    // const directionalLight = new THREE.DirectionalLight('yellow');
+    // directionalLight.position.set(0,0,2);
+    // scene.add(directionalLight);
+
     //Add some fog
     //scene.fog = new THREE.Fog(0xDFE9F3, 0.0, 500.0);
     
@@ -161,6 +166,89 @@ for(let i = 0; i < 50; i++)
     }
    
 }
+//Cloud 
+let loader = new THREE.TextureLoader();
+loader.load('img/cloud.jpg', (texture) => {
+  const cloudGeo = new THREE.PlaneBufferGeometry(400,400);
+  const cloudMaterial = new THREE.MeshLambertMaterial({
+    map: texture,
+    fog:false,
+    transparent:true
+    
+    
+    
+  })
+  for (let i=0; i < 25; i++){
+    let cloud = new THREE.Mesh(cloudGeo,cloudMaterial);
+    cloud.position.set(
+      Math.random() * 800 -400,
+      300,
+      Math.random() * 500 - 400
+    );
+    cloud.rotation.x = 1.16;
+    cloud.rotation.y = -0.12;
+    cloud.rotation.z = Math.random() * 360;
+    cloud.material.opacity = 0.6;
+    scene.add(cloud);
+  }
+})
+
+
+//Rain 
+let rain;
+const vertex = new THREE.Vector3();
+const rainSprite = new THREE.TextureLoader().load('img/disc.png');
+const geometry = new THREE.BufferGeometry();
+const vertices = [];
+for (let i = 0; i < 10000; i++) {
+    vertices.push(
+        Math.random() * 20 - 10,
+        Math.random() * 30,
+        Math.random() * 20 - 10
+    );
+}
+
+geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+const material = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.02,
+    
+    transparent: true
+});
+
+rain = new THREE.Points(geometry, material);
+//scene.add(rain);
+
+// hace la animacion de la lluvia cayendo.
+function rainVelocity() {
+
+  var positionAttribute = rain.geometry.getAttribute('position');
+
+  for (var i = 0; i < positionAttribute.count; i++) {
+
+      vertex.fromBufferAttribute(positionAttribute, i);
+      
+      vertex.y -= 0.05;
+
+      if (vertex.x >= -4 && vertex.x <= 4 && vertex.z >= -4 && vertex.z <= 4) {
+          if (vertex.y < 6) {
+              vertex.y = 10;
+          }
+      }
+
+
+      if (vertex.y < 0) {
+          vertex.y = 10;
+      }
+
+      positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
+
+  }
+
+  positionAttribute.needsUpdate = true;
+
+}
     //Create geometry
     // const boxWidth = 1;
     // const boxHeight = 1;
@@ -200,6 +288,7 @@ for(let i = 0; i < 50; i++)
      // // required if controls.enableDamping or controls.autoRotate are set to true
       //controls.update();
      // main()
+     //rainVelocity();
       renderer.render( scene, camera );
       controls.update();
     }
