@@ -409,7 +409,7 @@ async function loadFenceBorder(){
 
     //Positions of rocks
     meshes["rock1"].position.set(-9,0,-6.5);
-    meshes["rock2"].position.set(9,0,-6.5);
+    meshes["rock2"].position.set(9.3,0,-6.7);
     meshes["rock3"].position.set(-9,0,6.5);
     //meshes["rock1"].position.set(-4,0,4);
 
@@ -515,6 +515,13 @@ async function loadFenceBorder(){
     meshes["fenceBorder30"].rotation.y -= Math.PI/2;
 
     //Position for back fences
+    let x = -9;
+    for (let i=31; i < 51; i ++){
+      
+      meshes[`fenceBorder${i}`].position.set( x,0 ,-7)
+      x++;
+      console.log(x);
+    }
     meshes["fenceBorder31"].position.set(-9,-0,-7);
     //meshes["fenceBorder31"].rotation.y -= Math.PI/2;
     
@@ -551,11 +558,11 @@ async function loadFenceBorder(){
     scene.add(meshes["fenceBorder14"]);
     scene.add(meshes["fenceBorder15"]);
 
-    for (let i=16; i < 30; i++ ){
+    for (let i=16; i < 50; i++ ){
       scene.add(meshes[`fenceBorder${i}`]);
     }
 
-    scene.add(meshes["fenceBorder31"]);
+   
 
     
     
