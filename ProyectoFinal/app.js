@@ -63,15 +63,15 @@ function main(){
     //Create scene
     const scene = new THREE.Scene();
 
-   scene.background = new THREE.CubeTextureLoader()
-   .load([
-    'img/posx.jpg',
-    'img/negx.jpg',
-    'img/posy.jpg',
-    'img/negy.jpg',
-    'img/posz.jpg',
-    'img/negz.jpg',
-   ])
+  //  scene.background = new THREE.CubeTextureLoader()
+  //  .load([
+  //   'img/posx.jpg',
+  //   'img/negx.jpg',
+  //   'img/posy.jpg',
+  //   'img/negy.jpg',
+  //   'img/posz.jpg',
+  //   'img/negz.jpg',
+  //  ])
 
     //Add Fog
     
@@ -522,8 +522,7 @@ async function loadFenceBorder(){
       x++;
       console.log(x);
     }
-    meshes["fenceBorder31"].position.set(-9,-0,-7);
-    //meshes["fenceBorder31"].rotation.y -= Math.PI/2;
+    
     
 
 
