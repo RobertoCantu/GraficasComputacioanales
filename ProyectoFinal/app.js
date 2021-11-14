@@ -99,7 +99,23 @@ function main(){
     light.castShadow = true;
     light.shadow.camera.near = 0.1;
     light.shadow.camera.far = 25;
-    scene.add(light);
+    //scene.add(light);
+
+    //Left lamp light
+    let lampLight = new THREE.PointLight(0xffffff,0.8,4);
+    lampLight.position.set(-2,1.5,2.7);
+    lampLight.castShadow = true;
+    lampLight.shadow.camera.near = 0.1;
+    lampLight.shadow.camera.far = 25;
+    scene.add(lampLight);
+
+    //Right lamp light
+    let lampLightRight = new THREE.PointLight(0xffffff,0.8,4);
+    lampLightRight.position.set(2,1.5,2.7);
+    lampLightRight.castShadow = true;
+    lampLightRight.shadow.camera.near = 0.1;
+    lampLightRight.shadow.camera.far = 25;
+    scene.add(lampLightRight);
     //Add flash
     let flash = new THREE.PointLight(0x06d89,30,500,1.7);
     flash.position.set(200,300,100);
@@ -139,6 +155,16 @@ function main(){
     fall: {
       obj: 'mod/treeFall.obj',
       mtl: 'mod/treeFall.mtl',
+      mesh: null
+    },
+    lightPost: {
+      obj: 'mod/lightpostSingle.obj',
+      mtl: 'mod/lightpostSingle.mtl',
+      mesh: null
+    },
+    dirt: {
+      obj: 'mod/shovelDirt.obj',
+      mtl: 'mod/shovelDirt.mtl',
       mesh: null
     }
      
@@ -219,6 +245,58 @@ async function loadFallsModel(){
   })
 }
 
+//Load light post
+async function loadLightPost(){
+  return new Promise((resolve) => {
+            let mtlLoader =  new MTLLoader();
+           mtlLoader.load(models["lightPost"].mtl, (materials) => {
+                materials.preload();
+               let objLoader = new OBJLoader();
+               objLoader.setMaterials(materials);
+               objLoader.load(models["lightPost"].obj, (mesh) => {
+               
+                (models["lightPost"].mesh = mesh);
+                mesh.traverse((node) => {
+                  if (node.type === "Mesh"){
+                    node.castShadow = true;
+                    node.receiveShadow = false;
+                  }
+                })
+                //console.log(models);
+                resolve(models);
+               })
+           });
+     console.log(models);
+  })
+}
+
+//Light dirt
+async function loadDirt(){
+  return new Promise((resolve) => {
+            let mtlLoader =  new MTLLoader();
+           mtlLoader.load(models["dirt"].mtl, (materials) => {
+                materials.preload();
+               let objLoader = new OBJLoader();
+               objLoader.setMaterials(materials);
+               objLoader.load(models["dirt"].obj, (mesh) => {
+               
+                (models["dirt"].mesh = mesh);
+                mesh.traverse((node) => {
+                  if (node.type === "Mesh"){
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                })
+                //console.log(models);
+                resolve(models);
+               })
+           });
+     console.log(models);
+  })
+}
+
+
+
   async function onResourcesLoaded(){
     //meshes["tree1"] = models.tree.mesh.clone();
     //meshes["tree2"] = models.tree.mesh.clone();
@@ -226,6 +304,8 @@ async function loadFallsModel(){
     const trees = await loadModels();
     const rocks = await loadRocksModel();
     const falls = await loadFallsModel();
+    const lightPost = await loadLightPost();
+    const dirt = await loadDirt();
     
     //console.log(trees);
     console.log(falls);
@@ -239,6 +319,15 @@ async function loadFallsModel(){
     meshes["fall2"] = falls.fall.mesh.clone();
     meshes["fall3"] = falls.fall.mesh.clone();
     meshes["fall4"] = falls.fall.mesh.clone();
+    meshes["lightPost"] = lightPost.lightPost.mesh.clone();
+    meshes["lightPost2"] = lightPost.lightPost.mesh.clone();
+    meshes["dirt"] = dirt.dirt.mesh.clone();
+    meshes["dirt2"] = dirt.dirt.mesh.clone();
+    meshes["dirt3"] = dirt.dirt.mesh.clone();
+
+
+
+
     //meshes["rock1"] = models2.rock.mesh.clone();
 
     //Positions of trees
@@ -251,13 +340,21 @@ async function loadFallsModel(){
     meshes["fall3"].position.set(6,0,-2);
     meshes["fall4"].position.set(8,0,-5);
 
-
-
     //Positions of rocks
     meshes["rock1"].position.set(-9,0,-6.5);
     meshes["rock2"].position.set(9,0,-6.5);
     meshes["rock3"].position.set(-9,0,6.5);
     //meshes["rock1"].position.set(-4,0,4);
+
+    //Position of light posts
+    meshes["lightPost"].position.set(-2,0,2);
+    meshes["lightPost2"].position.set(2,0,2);
+
+    //Posiiton of dirt
+    meshes["dirt"].position.set(-6,0,2);
+    meshes["dirt2"].position.set(6,0,-4);
+    meshes["dirt3"].position.set(2,0,5);
+
 
     //Add models to the scene
     scene.add(meshes["tree1"]);
@@ -269,6 +366,11 @@ async function loadFallsModel(){
     scene.add(meshes["fall2"]);
     scene.add(meshes["fall3"]);
     scene.add(meshes["fall4"]);
+    scene.add(meshes["lightPost"]);
+    scene.add(meshes["lightPost2"]);
+    scene.add(meshes["dirt"]);
+    scene.add(meshes["dirt2"]);
+    scene.add(meshes["dirt3"]);
     
     
   }
@@ -436,6 +538,7 @@ loader.load('img/cloud.jpg', (texture) => {
 })
 
 
+
 //Rain 
 let rain;
 const vertex = new THREE.Vector3();
@@ -532,6 +635,7 @@ function rainVelocity() {
     }
     function animate() {
       requestAnimationFrame( animate );
+      
 
       //Animate clouds
       console.log("clouds");
