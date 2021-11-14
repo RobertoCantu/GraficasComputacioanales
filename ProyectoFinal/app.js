@@ -138,6 +138,7 @@ function main(){
     slender.load('scene.gltf', function (gltf){
       obj = gltf.scene;
       obj.scale.set(0.0030,0.0030,0.0030);
+      //obj.rotation.y += Math.PI /2;
       console.log(obj.scale)
      
        scene.add(gltf.scene);
@@ -754,8 +755,14 @@ function rainVelocity() {
     function keyUp(event){
       keyboard[event.keyCode] = false
     }
+
+
     function animate() {
       requestAnimationFrame( animate );
+
+      //Randomly rotate slender
+      obj.rotation.y += 0.02;
+
       
 
       //Animate clouds
