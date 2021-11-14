@@ -166,6 +166,11 @@ function main(){
       obj: 'mod/shovelDirt.obj',
       mtl: 'mod/shovelDirt.mtl',
       mesh: null
+    },
+    fenceBorder: {
+      obj: 'mod/ironFenceBorder.obj',
+      mtl: 'mod/ironFenceBorder.mtl',
+      mesh: null
     }
      
   }
@@ -295,6 +300,31 @@ async function loadDirt(){
   })
 }
 
+//Load fence border
+async function loadFenceBorder(){
+  return new Promise((resolve) => {
+            let mtlLoader =  new MTLLoader();
+           mtlLoader.load(models["fenceBorder"].mtl, (materials) => {
+                materials.preload();
+               let objLoader = new OBJLoader();
+               objLoader.setMaterials(materials);
+               objLoader.load(models["fenceBorder"].obj, (mesh) => {
+               
+                (models["fenceBorder"].mesh = mesh);
+                mesh.traverse((node) => {
+                  if (node.type === "Mesh"){
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                })
+                //console.log(models);
+                resolve(models);
+               })
+           });
+     console.log(models);
+  })
+}
+
 
 
   async function onResourcesLoaded(){
@@ -306,6 +336,7 @@ async function loadDirt(){
     const falls = await loadFallsModel();
     const lightPost = await loadLightPost();
     const dirt = await loadDirt();
+    const fenceBorder = await loadFenceBorder();
     
     //console.log(trees);
     console.log(falls);
@@ -324,6 +355,42 @@ async function loadDirt(){
     meshes["dirt"] = dirt.dirt.mesh.clone();
     meshes["dirt2"] = dirt.dirt.mesh.clone();
     meshes["dirt3"] = dirt.dirt.mesh.clone();
+    meshes["fenceBorder"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder2"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder3"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder4"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder5"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder6"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder7"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder8"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder9"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder10"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder11"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder12"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder13"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder14"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder15"] = fenceBorder.fenceBorder.mesh.clone();
+
+    meshes["fenceBorder16"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder17"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder18"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder19"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder20"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder21"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder22"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder23"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder24"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder25"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder26"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder27"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder28"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder29"] = fenceBorder.fenceBorder.mesh.clone();
+    meshes["fenceBorder30"] = fenceBorder.fenceBorder.mesh.clone();
+
+    for (let i=31; i < 51; i ++){
+      meshes[`fenceBorder${i}`] = fenceBorder.fenceBorder.mesh.clone();
+    }
+
 
 
 
@@ -355,6 +422,103 @@ async function loadDirt(){
     meshes["dirt2"].position.set(6,0,-4);
     meshes["dirt3"].position.set(2,0,5);
 
+    //Position of left fence borders
+    meshes["fenceBorder"].position.set(-9.5,-0,2);
+    meshes["fenceBorder"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder2"].position.set(-9.5,-0,3);
+    meshes["fenceBorder2"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder3"].position.set(-9.5,-0,4);
+    meshes["fenceBorder3"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder4"].position.set(-9.5,-0,5);
+    meshes["fenceBorder4"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder5"].position.set(-9.5,-0,6);
+    meshes["fenceBorder5"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder6"].position.set(-9.5,-0,7);
+    meshes["fenceBorder6"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder7"].position.set(-9.5,-0,1);
+    meshes["fenceBorder7"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder8"].position.set(-9.5,-0,0);
+    meshes["fenceBorder8"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder9"].position.set(-9.5,-0,-1);
+    meshes["fenceBorder9"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder10"].position.set(-9.5,-0,-2);
+    meshes["fenceBorder10"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder11"].position.set(-9.5,-0,-3);
+    meshes["fenceBorder11"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder12"].position.set(-9.5,-0,-4);
+    meshes["fenceBorder12"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder13"].position.set(-9.5,-0,-5);
+    meshes["fenceBorder13"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder14"].position.set(-9.5,-0,-6);
+    meshes["fenceBorder14"].rotation.y += Math.PI/2;
+
+    meshes["fenceBorder15"].position.set(-9.5,-0,-7);
+    meshes["fenceBorder15"].rotation.y += Math.PI/2;
+
+    //Position of right fence borders
+    meshes["fenceBorder16"].position.set(9.5,-0,2);
+    meshes["fenceBorder16"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder17"].position.set(9.5,-0,3);
+    meshes["fenceBorder17"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder18"].position.set(9.5,-0,4);
+    meshes["fenceBorder18"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder19"].position.set(9.5,-0,5);
+    meshes["fenceBorder19"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder20"].position.set(9.5,-0,6);
+    meshes["fenceBorder20"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder21"].position.set(9.5,-0,7);
+    meshes["fenceBorder21"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder22"].position.set(9.5,-0,1);
+    meshes["fenceBorder22"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder23"].position.set(9.5,-0,0);
+    meshes["fenceBorder23"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder24"].position.set(9.5,-0,-1);
+    meshes["fenceBorder24"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder25"].position.set(9.5,-0,-2);
+    meshes["fenceBorder25"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder26"].position.set(9.5,-0,-3);
+    meshes["fenceBorder26"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder27"].position.set(9.5,-0,-4);
+    meshes["fenceBorder27"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder28"].position.set(9.5,-0,-5);
+    meshes["fenceBorder28"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder29"].position.set(9.5,-0,-6);
+    meshes["fenceBorder29"].rotation.y -= Math.PI/2;
+
+    meshes["fenceBorder30"].position.set(9.5,-0,-7);
+    meshes["fenceBorder30"].rotation.y -= Math.PI/2;
+
+    //Position for back fences
+    meshes["fenceBorder31"].position.set(-9,-0,-7);
+    //meshes["fenceBorder31"].rotation.y -= Math.PI/2;
+    
+
 
     //Add models to the scene
     scene.add(meshes["tree1"]);
@@ -371,6 +535,28 @@ async function loadDirt(){
     scene.add(meshes["dirt"]);
     scene.add(meshes["dirt2"]);
     scene.add(meshes["dirt3"]);
+    scene.add(meshes["fenceBorder"]);
+    scene.add(meshes["fenceBorder2"]);
+    scene.add(meshes["fenceBorder3"]);
+    scene.add(meshes["fenceBorder4"]);
+    scene.add(meshes["fenceBorder5"]);
+    scene.add(meshes["fenceBorder6"]);
+    scene.add(meshes["fenceBorder7"]);
+    scene.add(meshes["fenceBorder8"]);
+    scene.add(meshes["fenceBorder9"]);
+    scene.add(meshes["fenceBorder10"]);
+    scene.add(meshes["fenceBorder11"]);
+    scene.add(meshes["fenceBorder12"]);
+    scene.add(meshes["fenceBorder13"]);
+    scene.add(meshes["fenceBorder14"]);
+    scene.add(meshes["fenceBorder15"]);
+
+    for (let i=16; i < 30; i++ ){
+      scene.add(meshes[`fenceBorder${i}`]);
+    }
+
+    scene.add(meshes["fenceBorder31"]);
+
     
     
   }
@@ -390,7 +576,7 @@ async function loadDirt(){
           }
         });
         scene.add(mesh);
-        mesh.position.set(-3,0,-2);
+        mesh.position.set(-6,0,-2);
       }
       )
     })
