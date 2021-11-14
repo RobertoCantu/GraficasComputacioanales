@@ -10,3 +10,7 @@ al parecer no funciona en google chrome
 2 Opcion
 Utilizar la extension Live Server de Visual Studio para poder abrir el index.html en el navegador
 
+##Referencias
+Modelos 3d fueron obtenidos de https://kenney.nl/
+Musica de ambiente es de Brad McBride https://www.youtube.com/watch?v=1DE3e_hkBFo&t=2200s&ab_channel=BradMcBride
+
