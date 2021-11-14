@@ -40,7 +40,7 @@ function main(){
 
     // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( 'music/ambient.webm', function( buffer ) {
+    audioLoader.load( 'music/Rain.ogg', function( buffer ) {
 	  sound.setBuffer( buffer );
 	  sound.setLoop( true );
 	  sound.setVolume( 0.5 );
@@ -134,16 +134,21 @@ function main(){
     //scene.fog = new THREE.Fog(0xDFE9F3, 0.06, 500.0);
 
     //Loading slender man
-    let slender = new GLTFLoader();
-    let obj;
-    slender.load('scene.gltf', function (gltf){
-      obj = gltf.scene;
-      obj.scale.set(0.0030,0.0030,0.0030);
-      //obj.rotation.y += Math.PI /2;
-      console.log(obj.scale)
+    
      
-       scene.add(gltf.scene);
+        let slender = new GLTFLoader();
+        let obj;
+        slender.load('scene.gltf', function (gltf){
+        obj = gltf.scene;
+        obj.scale.set(0.0030,0.0030,0.0030);
+        //obj.rotation.y += Math.PI /2;
+        console.log(obj.scale)
+     
+         scene.add(gltf.scene);
     })
+  
+
+    
     
   //Modelos loading
   let models = {
@@ -696,7 +701,7 @@ loader.load('img/cloud.jpg', (texture) => {
 //Rain 
 let rain;
 const vertex = new THREE.Vector3();
-const rainSprite = new THREE.TextureLoader().load('img/disc.png');
+//const rainSprite = new THREE.TextureLoader().load('img/disc.png');
 const geometry = new THREE.BufferGeometry();
 const vertices = [];
 for (let i = 0; i < 10000; i++) {
@@ -719,7 +724,7 @@ const material = new THREE.PointsMaterial({
 rain = new THREE.Points(geometry, material);
 //scene.add(rain);
 
-// hace la animacion de la lluvia cayendo.
+
 function rainVelocity() {
 
   var positionAttribute = rain.geometry.getAttribute('position');
@@ -762,9 +767,12 @@ function rainVelocity() {
     function animate() {
       requestAnimationFrame( animate );
 
-      //Randomly rotate slender
-      obj.rotation.y += 0.02;
+
       
+      //Randomly rotate slender
+      if(obj != null){
+        obj.rotation.y += 0.01;
+         // //Left and right movement inside house
       if(!maxRight){
         obj.position.x += 0.01;
         if(obj.position.x >=1.8){
@@ -778,6 +786,12 @@ function rainVelocity() {
           maxRight = false;
         }
       }
+
+    
+      }
+      
+      
+     
 
       
 
