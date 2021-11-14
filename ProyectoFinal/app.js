@@ -1,26 +1,38 @@
 import * as THREE from './node_modules/three/build/three.module.js'
+//import {OrbitControls} from './three/examples/jsm/controls/OrbitControls.js'
+//import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/controls/OrbitControls.js';
-
+import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/loaders/GLTFLoader.js';
+import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
+import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
+//import { LoadingManager } from 'three';
 
 
 function main(){
     const canvas = document.querySelector("#root");
     const renderer = new THREE.WebGLRenderer({canvas});
+    let keyboard = {};
+    let player = {height:1.8, speed:0.02};
+    let particles = [];
+    window.addEventListener('keydown', keyDown);
+    window.addEventListener('keyup', keyUp);
     const color = 'lightblue';
+
     //renderer.setClearColor('#262837')
     
     document.body.appendChild( renderer.domElement );
     
-
+    console.log(window.innerHeight)
+    console.log(window.innerWidth)
     //Set up camera
     const fov = 75;
     const aspect = window.innerWidth/window.innerHeight;
     const near = 0.1;
     const far = 1000;
-    const camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
-    camera.position.set(0,2.5,10); 
+    const camera = new THREE.PerspectiveCamera(fov,1920/1080,near,far);
+    camera.position.set(0,player.height,10); 
     //camera.position.z = 100
-    camera.lookAt(new THREE.Vector3(0,0,0)); 
+    camera.lookAt(new THREE.Vector3(0,player.height,0)); 
     console.log(aspect);
     //camera.position.set(0,1.8,-5);
     // camera.lookAt(new THREE.Vector3(0,0,0));
@@ -35,17 +47,17 @@ function main(){
 
    scene.background = new THREE.CubeTextureLoader()
    .load([
-    'img/posx.png',
-    'img/negx.png',
-    'img/posy.png',
-    'img/negy.png',
-    'img/posz.png',
-    'img/negz.png',
+    'img/posx.jpg',
+    'img/negx.jpg',
+    'img/posy.jpg',
+    'img/negy.jpg',
+    'img/posz.jpg',
+    'img/negz.jpg',
    ])
 
     //Add Fog
     
-    scene.fog = new THREE.FogExp2(color, 0.06);
+    //scene.fog = new THREE.FogExp2(color, 0.06);
     //scene.background = new THREE.Color(color);
 
     //Add backgorund color
@@ -55,6 +67,11 @@ function main(){
     const ambient = new THREE.AmbientLight(0x555555);
     scene.add(ambient);
 
+    //Add flash
+    let flash = new THREE.PointLight(0x06d89,30,500,1.7);
+    flash.position.set(200,300,100);
+    scene.add(flash);
+
     //Moonlight
     // const directionalLight = new THREE.DirectionalLight('yellow');
     // directionalLight.position.set(0,0,2);
@@ -63,19 +80,158 @@ function main(){
     //Add some fog
     //scene.fog = new THREE.Fog(0xDFE9F3, 0.0, 500.0);
     
-    
+  //Modelos loading
+  let models = {
+    tree: {
+      obj: 'mod/tree.obj',
+      mtl: 'mod/tree.mtl',
+      mesh: null
+    },
+    rock: {
+      obj: 'mod/rockC.obj',
+      mtl: 'mod/rockC.mtl',
+      mesh: null
+    },
+    fall: {
+      obj: 'mod/treeFall.obj',
+      mtl: 'mod/treeFall.mtl',
+      mesh: null
+    }
+     
+  }
 
-    //Sky 
-  //   const sky = new THREE.Mesh(
-  //     new THREE.SphereGeometry(10000, 32, 32),
-  //     new THREE.MeshBasicMaterial({
-  //         color: 0x8080FF,
-  //         side: THREE.BackSide,
-  //     })
-  // );
-  //sky.material.onBeforeCompile = ModifyShader_;
-  //scene.add(sky);
+  let meshes = {}
+
+  //Load tree models
+ async function loadModels(){
+   return new Promise((resolve) => {
+             let mtlLoader =  new MTLLoader();
+            mtlLoader.load(models["tree"].mtl, (materials) => {
+                 materials.preload();
+                let objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.load(models["tree"].obj, (mesh) => {
+                 (models["tree"].mesh = mesh);
+                 //console.log(models);
+                 resolve(models);
+                })
+            });
+      console.log(models);
+   })
+ }
+
+ //Load rock models
+ async function loadRocksModel(){
+  return new Promise((resolve) => {
+            let mtlLoader =  new MTLLoader();
+           mtlLoader.load(models["rock"].mtl, (materials) => {
+                materials.preload();
+               let objLoader = new OBJLoader();
+               objLoader.setMaterials(materials);
+               objLoader.load(models["rock"].obj, (mesh) => {
+                (models["rock"].mesh = mesh);
+                //console.log(models);
+                resolve(models);
+               })
+           });
+     console.log(models);
+  })
+}
+
+
+
+//Load fall trees
+async function loadFallsModel(){
+  return new Promise((resolve) => {
+            let mtlLoader =  new MTLLoader();
+           mtlLoader.load(models["fall"].mtl, (materials) => {
+                materials.preload();
+               let objLoader = new OBJLoader();
+               objLoader.setMaterials(materials);
+               objLoader.load(models["fall"].obj, (mesh) => {
+                (models["fall"].mesh = mesh);
+                //console.log(models);
+                resolve(models);
+               })
+           });
+     console.log(models);
+  })
+}
+
+  async function onResourcesLoaded(){
+    //meshes["tree1"] = models.tree.mesh.clone();
+    //meshes["tree2"] = models.tree.mesh.clone();
+    //scene.add(meshes["tree1"]);
+    const trees = await loadModels();
+    const rocks = await loadRocksModel();
+    const falls = await loadFallsModel();
     
+    //console.log(trees);
+    console.log(falls);
+    //Mesh objects
+    meshes["tree1"] = trees.tree.mesh.clone();
+    meshes["tree2"] = trees.tree.mesh.clone();
+    meshes["rock1"] = rocks.rock.mesh.clone();
+    meshes["rock2"] = rocks.rock.mesh.clone();
+    meshes["rock3"] = rocks.rock.mesh.clone();
+    meshes["fall1"] = falls.fall.mesh.clone();
+    meshes["fall2"] = falls.fall.mesh.clone();
+    meshes["fall3"] = falls.fall.mesh.clone();
+    meshes["fall4"] = falls.fall.mesh.clone();
+    //meshes["rock1"] = models2.rock.mesh.clone();
+
+    //Positions of trees
+    meshes["tree1"].position.set(-6,0,4);
+    meshes["tree2"].position.set(-8,0,1);
+
+    //Positions of fall trees
+    meshes["fall1"].position.set(6,0,4);
+    meshes["fall2"].position.set(8,0,1);
+    meshes["fall3"].position.set(6,0,-2);
+    meshes["fall4"].position.set(8,0,-5);
+
+
+
+    //Positions of rocks
+    meshes["rock1"].position.set(-9,0,-6.5);
+    meshes["rock2"].position.set(9,0,-6.5);
+    meshes["rock3"].position.set(-9,0,6.5);
+    //meshes["rock1"].position.set(-4,0,4);
+
+    //Add models to the scene
+    scene.add(meshes["tree1"]);
+    scene.add(meshes["tree2"]);
+    scene.add(meshes["rock1"]);
+    scene.add(meshes["rock2"]);
+    scene.add(meshes["rock3"]);
+    scene.add(meshes["fall1"]);
+    scene.add(meshes["fall2"]);
+    scene.add(meshes["fall3"]);
+    scene.add(meshes["fall4"]);
+    
+    
+  }
+  onResourcesLoaded();
+
+  //Added model
+    let mtlLoader = new MTLLoader();
+    mtlLoader.load('mod/tree.mtl', (materials) => {
+      materials.preload();
+      let objLoader = new OBJLoader();
+      objLoader.setMaterials(materials);
+      objLoader.load('mod/tree.obj', (mesh) => {
+        mesh.traverse((node) => {
+          if (node instanceof THREE.Mesh){
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        })
+        scene.add(mesh);
+        mesh.position.set(-6,0,-2);
+      })
+    })
+    
+   
     
     //Create floor
     let texture = new THREE.TextureLoader().load('img/floor.jpg')
@@ -86,7 +242,7 @@ function main(){
       new THREE.PlaneGeometry(20,15,10,10),
       new THREE.MeshPhongMaterial({map:texture, wireframe:false})
     );
-    meshFloor.rotation.x -= Math.PI /2;
+    meshFloor.rotation.x = - Math.PI / 2; //90 degrees
     scene.add(meshFloor);
    
 
@@ -168,7 +324,7 @@ for(let i = 0; i < 50; i++)
     grave.rotation.y = (Math.random() - 0.5) * 0.4
 
     // Add to the graves container
-    console.log(`x value is ${x}`);
+    //console.log(`x value is ${x}`);
     //console.log(`z values is ${z}`)
     if (x > 10 || x < -10 || z > 7.5 || z < -7.5){
       //Dont add gravee
@@ -200,6 +356,7 @@ loader.load('img/cloud.jpg', (texture) => {
     cloud.rotation.y = -0.12;
     cloud.rotation.z = Math.random() * 360;
     cloud.material.opacity = 0.6;
+    particles.push(cloud);
     scene.add(cloud);
   }
 })
@@ -292,16 +449,65 @@ function rainVelocity() {
     //animate();
     //renderer.render(scene, camera);
     //scene.fog = new THREE.FogExp2(0xDFE9F3,0.0000005);
-    function animate() {
+    function keyDown(event){
+      keyboard[event.keyCode] = true;
+    }
 
+    function keyUp(event){
+      keyboard[event.keyCode] = false
+    }
+    function animate() {
       requestAnimationFrame( animate );
+
+      //Animate clouds
+      console.log("clouds");
+      particles.forEach((p) => {
+        p.rotation.z += 0.002;
+      })
+
+      //Flash animation
+      if(Math.random() > 0 || flash.power > 100){
+        //console.log("Luz");
+        if (flash.power < 100){
+          flash.position.set(
+            Math.random() * 400,
+            300 + Math.random() * 200,
+            100
+          )
+        };
+        flash.power = 50 + Math.random() * 1000;
+      }
+      if(keyboard[87]){ // W key
+        camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
+        camera.position.z -= -Math.cos(camera.rotation.y) * player.speed;
+      }
+      if(keyboard[83]){ // S key
+        camera.position.x += Math.sin(camera.rotation.y) * player.speed;
+        camera.position.z += -Math.cos(camera.rotation.y) * player.speed;
+      }
+      if(keyboard[65]){ // A key
+        // Redirect motion by 90 degrees
+        camera.position.x += Math.sin(camera.rotation.y + Math.PI/2) * player.speed;
+        camera.position.z += -Math.cos(camera.rotation.y + Math.PI/2) * player.speed;
+      }
+      if(keyboard[68]){ // D key
+        camera.position.x += Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
+        camera.position.z += -Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
+      }
+      if(keyboard[37]){
+        console.log("");
+        camera.rotation.y -= Math.PI * 0.11;
+      }
+      if(keyboard[39]){
+        camera.rotation.y += Math.PI * 0.01;
+      }
     
      // // required if controls.enableDamping or controls.autoRotate are set to true
       //controls.update();
      // main()
      //rainVelocity();
       renderer.render( scene, camera );
-      controls.update();
+      //controls.update();
     }
     animate();
    
