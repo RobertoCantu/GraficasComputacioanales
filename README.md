@@ -5,7 +5,7 @@ Escena creada con la libreria Three.js, el objetivo de la escena es dar la senca
 ## Instrucciones
 1 Opcion 
 Abrir la siguiente github page en Firefox https://robertocantu.github.io/GraficasComputacionales/ProyectoFinal/index.html
-Al parecer no funcion en google chrome
+al parecer no funciona en google chrome
 
 2 Opcion
 Utilizar la extension Live Server de Visual Studio para poder abrir el index.html en el navegador
