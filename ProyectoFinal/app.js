@@ -10,27 +10,43 @@ import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/three
 
 function main(){
     const canvas = document.querySelector("#root");
-    const renderer = new THREE.WebGLRenderer({canvas});
     let keyboard = {};
     let player = {height:1.8, speed:0.02};
     let particles = [];
     window.addEventListener('keydown', keyDown);
     window.addEventListener('keyup', keyUp);
-    const color = 'lightblue';
-
-    //renderer.setClearColor('#262837')
-    
+    const renderer = new THREE.WebGLRenderer({canvas});
+    //Activate shadows
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.BasicShadowMap;
     document.body.appendChild( renderer.domElement );
     
-    console.log(window.innerHeight)
-    console.log(window.innerWidth)
+    
     //Set up camera
     const fov = 75;
     const aspect = window.innerWidth/window.innerHeight;
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov,1920/1080,near,far);
-    camera.position.set(0,player.height,10); 
+    camera.position.set(0,player.height,10);
+
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
+
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( 'music/ambient.webm', function( buffer ) {
+	  sound.setBuffer( buffer );
+	  sound.setLoop( true );
+	  sound.setVolume( 0.5 );
+	  sound.play();
+    });
+
+
     //camera.position.z = 100
     camera.lookAt(new THREE.Vector3(0,player.height,0)); 
     console.log(aspect);
@@ -63,14 +79,29 @@ function main(){
     //Add backgorund color
     //scene.background = new THREE.Color('#F00');  // red
 
+    //Add directionan light
+    // const light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
+    // light.position.set( 0, 1, 0 ); //default; light shining from top
+    // light.castShadow = true; // default false
+    // scene.add( light );
+
     //Add light
-    const ambient = new THREE.AmbientLight(0x555555);
+    //const ambient = new THREE.AmbientLight(0x242326);
+    const ambient = new THREE.AmbientLight(0xffffff,0.2);
+
     scene.add(ambient);
 
+    //New Point Light
+    let light = new THREE.PointLight(0xffffff,0.8,18);
+    light.position.set(-6,10,-0);
+    light.castShadow = true;
+    light.shadow.camera.near = 0.1;
+    light.shadow.camera.far = 25;
+    scene.add(light);
     //Add flash
     let flash = new THREE.PointLight(0x06d89,30,500,1.7);
     flash.position.set(200,300,100);
-    scene.add(flash);
+   // scene.add(flash);
 
     //Moonlight
     // const directionalLight = new THREE.DirectionalLight('yellow');
@@ -149,7 +180,14 @@ async function loadFallsModel(){
                let objLoader = new OBJLoader();
                objLoader.setMaterials(materials);
                objLoader.load(models["fall"].obj, (mesh) => {
+               
                 (models["fall"].mesh = mesh);
+                mesh.traverse((node) => {
+                  if (node instanceof THREE.Mesh){
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                })
                 //console.log(models);
                 resolve(models);
                })
@@ -219,16 +257,17 @@ async function loadFallsModel(){
       materials.preload();
       let objLoader = new OBJLoader();
       objLoader.setMaterials(materials);
-      objLoader.load('mod/tree.obj', (mesh) => {
-        mesh.traverse((node) => {
-          if (node instanceof THREE.Mesh){
+      objLoader.load('mod/tree.obj', function(mesh){
+        mesh.traverse(function(node){
+          if (node.type === "Mesh"){
             node.castShadow = true;
             node.receiveShadow = true;
           }
-        })
+        });
         scene.add(mesh);
-        mesh.position.set(-6,0,-2);
-      })
+        mesh.position.set(-3,0,-2);
+      }
+      )
     })
     
    
@@ -243,6 +282,7 @@ async function loadFallsModel(){
       new THREE.MeshPhongMaterial({map:texture, wireframe:false})
     );
     meshFloor.rotation.x = - Math.PI / 2; //90 degrees
+    meshFloor.receiveShadow = true;
     scene.add(meshFloor);
    
 
@@ -304,7 +344,7 @@ scene.add(graves)
 
 let stoneTexture = new THREE.TextureLoader().load('img/stone.png')
 const graveGeometry = new THREE.BoxBufferGeometry(0.6, 0.8, 0.2)
-const graveMaterial = new THREE.MeshBasicMaterial({ color: '#b2b6b1', map: stoneTexture })
+const graveMaterial = new THREE.MeshPhongMaterial({  map: stoneTexture })
 
 for(let i = 0; i < 50; i++)
 {
