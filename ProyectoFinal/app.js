@@ -1,10 +1,12 @@
-import * as THREE from './node_modules/three/build/three.module.js'
+//import * as THREE from './node_modules/three/build/three.module.js'
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/build/three.module.js';
 //import {OrbitControls} from './three/examples/jsm/controls/OrbitControls.js'
 //import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/loaders/GLTFLoader.js';
 import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
 import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
+
 //import { LoadingManager } from 'three';
 
 
@@ -110,6 +112,17 @@ function main(){
 
     //Add some fog
     //scene.fog = new THREE.Fog(0xDFE9F3, 0.0, 500.0);
+
+    //Loading slender man
+    let slender = new GLTFLoader();
+    let obj;
+    slender.load('scene.gltf', function (gltf){
+      obj = gltf.scene;
+      obj.scale.set(0.0030,0.0030,0.0030);
+      console.log(obj.scale)
+     
+       scene.add(gltf.scene);
+    })
     
   //Modelos loading
   let models = {
