@@ -18,7 +18,7 @@ function main(){
     const renderer = new THREE.WebGLRenderer({canvas});
     //Activate shadows
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.BasicShadowMap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild( renderer.domElement );
     
     
@@ -143,7 +143,12 @@ function main(){
                 objLoader.setMaterials(materials);
                 objLoader.load(models["tree"].obj, (mesh) => {
                  (models["tree"].mesh = mesh);
-                 //console.log(models);
+                 mesh.traverse((node) => {
+                  if (node.type === "Mesh"){
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                })
                  resolve(models);
                 })
             });
@@ -161,7 +166,12 @@ function main(){
                objLoader.setMaterials(materials);
                objLoader.load(models["rock"].obj, (mesh) => {
                 (models["rock"].mesh = mesh);
-                //console.log(models);
+                mesh.traverse((node) => {
+                  if (node.type === "Mesh"){
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                  }
+                })
                 resolve(models);
                })
            });
@@ -183,7 +193,7 @@ async function loadFallsModel(){
                
                 (models["fall"].mesh = mesh);
                 mesh.traverse((node) => {
-                  if (node instanceof THREE.Mesh){
+                  if (node.type === "Mesh"){
                     node.castShadow = true;
                     node.receiveShadow = true;
                   }
@@ -298,19 +308,23 @@ async function loadFallsModel(){
      //wallTexture.repeat.set(4, 4);
      const walls = new THREE.Mesh(
      new THREE.BoxBufferGeometry(4, 2.5, 4),
-     new THREE.MeshBasicMaterial({ color: 0xffffff,map:wallTexture})
+     new THREE.MeshPhongMaterial({ color: 0xffffff,map:wallTexture})
    )
    walls.position.y = 1.25
+   //walls.castShadow = true;
+   //walls.receiveShadow = true;
    house.add(walls)
 
   // Roof
   let roofTexture = new THREE.TextureLoader().load('img/roofCabin.jpg')
   const roof = new THREE.Mesh(
   new THREE.ConeBufferGeometry(3.5, 1, 4),
-  new THREE.MeshBasicMaterial({ color: '#b35f45', map: roofTexture })
+  new THREE.MeshPhongMaterial({ color: '#b35f45', map: roofTexture })
 )
 roof.rotation.y = Math.PI * 0.25
 roof.position.y = 2.5 + 0.5
+//roof.castShadow = true;
+roof.receiveShadow = true;
 house.add(roof)
 
 // Door
@@ -318,17 +332,19 @@ let test = new THREE.TextureLoader().load('img/negx.png')
 let doorTexture = new THREE.TextureLoader().load('img/door.jpg');
 const door = new THREE.Mesh(
   new THREE.PlaneBufferGeometry(2, 2),
-  new THREE.MeshBasicMaterial({ color: '#aa7b7b', map:doorTexture })
+  new THREE.MeshPhongMaterial({ color: '#aa7b7b', map:doorTexture })
 )
 door.position.y = 0.9
 door.position.z = 2 + 0.01
+door.castShadow = true;
+door.receiveShadow = true;
 house.add(door)
 
 //Window
 let glassTexture = new THREE.TextureLoader().load('img/glass.png')
 const glass = new THREE.Mesh(
   new THREE.PlaneBufferGeometry(1.5,1.5),
-  new THREE.MeshBasicMaterial({color: '#aa7b7b', map: glassTexture})
+  new THREE.MeshPhongMaterial({color: '#aa7b7b', map: glassTexture})
 )
 
 //window.position.z = 3
@@ -336,6 +352,8 @@ glass.rotation.y += Math.PI / 2
 glass.position.x = 2.05
 glass.position.z= 0;
 glass.position.y = 1.5;
+glass.castShadow = true;
+glass.receiveShadow = true;
 house.add(glass);
 
 // Graves
@@ -355,6 +373,9 @@ for(let i = 0; i < 50; i++)
 
     // Create the mesh
     const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+    grave.castShadow = true;
+    grave.receiveShadow = true;
+    
 
     // Position
     grave.position.set(x, 0.3, z)                              
