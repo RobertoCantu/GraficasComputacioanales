@@ -7,6 +7,7 @@ import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/th
 import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
 import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
 
+
 function main(){
     const canvas = document.querySelector("#root");
     let keyboard = {};
@@ -71,7 +72,7 @@ function main(){
 
     //Add Fog
     
-    //scene.fog = new THREE.FogExp2(color, 0.06);
+    //scene.fog = new THREE.FogExp2(0xDFE9F3, 0.06);
     //scene.background = new THREE.Color(color);
 
     //Add directionan light
@@ -110,17 +111,26 @@ function main(){
     lampLightRight.shadow.camera.far = 25;
     scene.add(lampLightRight);
     //Add flash
-    let flash = new THREE.PointLight(0x06d89,30,500,1.7);
-    flash.position.set(200,300,100);
-   // scene.add(flash);
+    let flash = new THREE.PointLight(0x06d89,30,500,2);
+    flash.position.set(100,250,100);
+    //flash.position.set(200,300,100);
+    flash.castShadow = true;
+    flash.shadow.camera.near = 0.1;
+    flash.shadow.camera.far = 500;
+    //flash.power = 50;
+    console.log(flash.power);
+    //scene.add(flash);
 
-    //Moonlight
-    // const directionalLight = new THREE.DirectionalLight('yellow');
-    // directionalLight.position.set(0,0,2);
+    //Light to represent moon but doesnt look good
+    //  const directionalLight = new THREE.DirectionalLight(0xF52A96);
+    //  directionalLight.castShadow = true; 
+    // directionalLight.position.set(-5,3,0);
+    // directionalLight.target.position.set(0,0,0);
     // scene.add(directionalLight);
+    // scene.add(directionalLight.target);
 
     //Add some fog
-    //scene.fog = new THREE.Fog(0xDFE9F3, 0.0, 500.0);
+    //scene.fog = new THREE.Fog(0xDFE9F3, 0.06, 500.0);
 
     //Loading slender man
     let slender = new GLTFLoader();
@@ -755,17 +765,17 @@ function rainVelocity() {
       })
 
       //Flash animation
-      if(Math.random() > 0 || flash.power > 100){
-        //console.log("Luz");
-        if (flash.power < 100){
-          flash.position.set(
-            Math.random() * 400,
-            300 + Math.random() * 200,
-            100
-          )
-        };
-        flash.power = 50 + Math.random() * 1000;
-      }
+      // if(Math.random() > 0.95 || flash.power > 100){
+      //   //console.log("Luz");
+      //   if (flash.power < 100){
+      //     flash.position.set(
+      //       Math.random() * 400,
+      //       300 + Math.random() * 200,
+      //       100
+      //     )
+      //   };
+      //   flash.power = 50 + Math.random() * 1000;
+      // }
       if(keyboard[87]){ // W key
         camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
         camera.position.z -= -Math.cos(camera.rotation.y) * player.speed;
