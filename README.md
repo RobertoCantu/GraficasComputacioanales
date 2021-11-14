@@ -1,6 +1,6 @@
 # GraficasComputacionales
 Repositorio sobre el proyecto final de la materia de graficas computacionales. 
 
-La escena de este proyecto esta basada en las famosas peliculas del genero de terror Viernes 13. Se representa el interior de una de las cabanas del campamento Crystal Lake hecha de difentes figuras, texturas y luces. 
+Escena creada con la libreria Three.js, el objetivo de la escena es dar la sencacion de soledad y aislaminento de la sociedad en noche muy tormentosa, meintras recorres tu hogar por fuera. Disfrutrar de una noche de lluvia solo no tiene nada de raro, lo malo es que no estas solo en esta escena 🎃🎃🎃
 
-The scene of this project is based on the famous horror movies Friday the 13th. It shows the interior of a cabin from the Crysal Lake camp made up from diferrent figures, textures and lighting. 
+
