@@ -11,8 +11,9 @@ import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/three
 function main(){
     const canvas = document.querySelector("#root");
     let keyboard = {};
-    let player = {height:1.8, speed:0.02};
+    let player = {height:1.8, speed:0.02}; //For first person view
     let particles = [];
+    let maxRight = false; //For controlling easter egg animation
     window.addEventListener('keydown', keyDown);
     window.addEventListener('keyup', keyUp);
     const renderer = new THREE.WebGLRenderer({canvas});
@@ -755,13 +756,28 @@ function rainVelocity() {
     function keyUp(event){
       keyboard[event.keyCode] = false
     }
-
+  
+    
 
     function animate() {
       requestAnimationFrame( animate );
 
       //Randomly rotate slender
       obj.rotation.y += 0.02;
+      
+      if(!maxRight){
+        obj.position.x += 0.01;
+        if(obj.position.x >=1.8){
+          maxRight = true;
+        }
+      }
+      
+      if(maxRight){
+        obj.position.x -= 0.01;
+        if(obj.position.x <= -1.7){
+          maxRight = false;
+        }
+      }
 
       
 
