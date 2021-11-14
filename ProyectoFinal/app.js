@@ -7,9 +7,6 @@ import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/th
 import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
 import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
 
-//import { LoadingManager } from 'three';
-
-
 function main(){
     const canvas = document.querySelector("#root");
     let keyboard = {};
@@ -53,8 +50,7 @@ function main(){
     camera.lookAt(new THREE.Vector3(0,player.height,0)); 
     console.log(aspect);
     //camera.position.set(0,1.8,-5);
-    // camera.lookAt(new THREE.Vector3(0,0,0));
-    //const controls = new OrbitControls( camera, renderer.domElement );
+  
     //controls.update();
    
     //Add orbit controls for better view
@@ -77,9 +73,6 @@ function main(){
     
     //scene.fog = new THREE.FogExp2(color, 0.06);
     //scene.background = new THREE.Color(color);
-
-    //Add backgorund color
-    //scene.background = new THREE.Color('#F00');  // red
 
     //Add directionan light
     // const light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
@@ -196,7 +189,6 @@ function main(){
                  resolve(models);
                 })
             });
-      console.log(models);
    })
  }
 
@@ -219,7 +211,6 @@ function main(){
                 resolve(models);
                })
            });
-     console.log(models);
   })
 }
 
@@ -242,11 +233,9 @@ async function loadFallsModel(){
                     node.receiveShadow = true;
                   }
                 })
-                //console.log(models);
                 resolve(models);
                })
            });
-     console.log(models);
   })
 }
 
@@ -267,11 +256,9 @@ async function loadLightPost(){
                     node.receiveShadow = false;
                   }
                 })
-                //console.log(models);
                 resolve(models);
                })
            });
-     console.log(models);
   })
 }
 
@@ -292,11 +279,9 @@ async function loadDirt(){
                     node.receiveShadow = true;
                   }
                 })
-                //console.log(models);
                 resolve(models);
                })
            });
-     console.log(models);
   })
 }
 
@@ -317,29 +302,22 @@ async function loadFenceBorder(){
                     node.receiveShadow = true;
                   }
                 })
-                //console.log(models);
                 resolve(models);
                })
            });
-     console.log(models);
   })
 }
 
 
 
   async function onResourcesLoaded(){
-    //meshes["tree1"] = models.tree.mesh.clone();
-    //meshes["tree2"] = models.tree.mesh.clone();
-    //scene.add(meshes["tree1"]);
     const trees = await loadModels();
     const rocks = await loadRocksModel();
     const falls = await loadFallsModel();
     const lightPost = await loadLightPost();
     const dirt = await loadDirt();
     const fenceBorder = await loadFenceBorder();
-    
-    //console.log(trees);
-    console.log(falls);
+
     //Mesh objects
     meshes["tree1"] = trees.tree.mesh.clone();
     meshes["tree2"] = trees.tree.mesh.clone();
@@ -390,12 +368,6 @@ async function loadFenceBorder(){
     for (let i=31; i < 51; i ++){
       meshes[`fenceBorder${i}`] = fenceBorder.fenceBorder.mesh.clone();
     }
-
-
-
-
-
-    //meshes["rock1"] = models2.rock.mesh.clone();
 
     //Positions of trees
     meshes["tree1"].position.set(-6,0,4);
@@ -523,9 +495,6 @@ async function loadFenceBorder(){
       console.log(x);
     }
     
-    
-
-
     //Add models to the scene
     scene.add(meshes["tree1"]);
     scene.add(meshes["tree2"]);
@@ -560,11 +529,6 @@ async function loadFenceBorder(){
     for (let i=16; i < 50; i++ ){
       scene.add(meshes[`fenceBorder${i}`]);
     }
-
-   
-
-    
-    
   }
   onResourcesLoaded();
 
@@ -587,8 +551,6 @@ async function loadFenceBorder(){
       )
     })
     
-   
-    
     //Create floor
     let texture = new THREE.TextureLoader().load('img/floor.jpg')
     texture.wrapS = THREE.RepeatWrapping;
@@ -610,16 +572,11 @@ async function loadFenceBorder(){
 
      //Create house 
      let wallTexture = new THREE.TextureLoader().load('img/wall.jpg');
-     //wallTexture.wrapS = THREE.RepeatWrapping;
-    // wallTexture.wrapT = THREE.RepeatWrapping;
-     //wallTexture.repeat.set(4, 4);
      const walls = new THREE.Mesh(
      new THREE.BoxBufferGeometry(4, 2.5, 4),
      new THREE.MeshPhongMaterial({ color: 0xffffff,map:wallTexture})
    )
    walls.position.y = 1.25
-   //walls.castShadow = true;
-   //walls.receiveShadow = true;
    house.add(walls)
 
   // Roof
@@ -630,7 +587,6 @@ async function loadFenceBorder(){
 )
 roof.rotation.y = Math.PI * 0.25
 roof.position.y = 2.5 + 0.5
-//roof.castShadow = true;
 roof.receiveShadow = true;
 house.add(roof)
 
@@ -654,7 +610,6 @@ const glass = new THREE.Mesh(
   new THREE.MeshPhongMaterial({color: '#aa7b7b', map: glassTexture})
 )
 
-//window.position.z = 3
 glass.rotation.y += Math.PI / 2
 glass.position.x = 2.05
 glass.position.z= 0;
@@ -691,9 +646,6 @@ for(let i = 0; i < 50; i++)
     grave.rotation.z = (Math.random() - 0.5) * 0.4
     grave.rotation.y = (Math.random() - 0.5) * 0.4
 
-    // Add to the graves container
-    //console.log(`x value is ${x}`);
-    //console.log(`z values is ${z}`)
     if (x > 10 || x < -10 || z > 7.5 || z < -7.5){
       //Dont add gravee
     } else {
@@ -728,8 +680,6 @@ loader.load('img/cloud.jpg', (texture) => {
     scene.add(cloud);
   }
 })
-
-
 
 //Rain 
 let rain;
@@ -786,38 +736,7 @@ function rainVelocity() {
   positionAttribute.needsUpdate = true;
 
 }
-    //Create geometry
-    // const boxWidth = 1;
-    // const boxHeight = 1;
-    // const boxDepth = 1;
-    // const geometry = new THREE.BoxGeometry(boxWidth,boxHeight,boxDepth);
-
-    // //Create material
-    // const material = new THREE.MeshBasicMaterial({color: 0x44aa88});
-
-    // //Create mesh
-    // const cube = new THREE.Mesh(geometry,material);
-
-    //Add mesh to the scene
-   // scene.add(cube);
-
-    // function render(time) {
-    //     time *= 0.001;  // convert time to seconds
-    
-    //     cube.rotation.x = time;
-    //     cube.rotation.y = time;
-    
-    //     renderer.render(scene, camera);
-    
-    //     requestAnimationFrame(render);
-    //   }
-    //   requestAnimationFrame(render);
-    
-    //Renderer
-    
-    //animate();
-    //renderer.render(scene, camera);
-    //scene.fog = new THREE.FogExp2(0xDFE9F3,0.0000005);
+   
     function keyDown(event){
       keyboard[event.keyCode] = true;
     }
@@ -856,7 +775,7 @@ function rainVelocity() {
         camera.position.z += -Math.cos(camera.rotation.y) * player.speed;
       }
       if(keyboard[65]){ // A key
-        // Redirect motion by 90 degrees
+        
         camera.position.x += Math.sin(camera.rotation.y + Math.PI/2) * player.speed;
         camera.position.z += -Math.cos(camera.rotation.y + Math.PI/2) * player.speed;
       }
@@ -871,13 +790,9 @@ function rainVelocity() {
       if(keyboard[39]){
         camera.rotation.y += Math.PI * 0.01;
       }
-    
-     // // required if controls.enableDamping or controls.autoRotate are set to true
-      //controls.update();
-     // main()
+  
      //rainVelocity();
       renderer.render( scene, camera );
-      //controls.update();
     }
     animate();
    
