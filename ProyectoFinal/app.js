@@ -717,7 +717,6 @@ geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
 const material = new THREE.PointsMaterial({
     color: 0xffffff,
     size: 0.02,
-    
     transparent: true
 });
 
