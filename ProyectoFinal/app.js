@@ -1,7 +1,4 @@
-//import * as THREE from './node_modules/three/build/three.module.js'
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/build/three.module.js';
-//import {OrbitControls} from './three/examples/jsm/controls/OrbitControls.js'
-//import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/loaders/GLTFLoader.js';
 import {OBJLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
@@ -21,7 +18,6 @@ function main(){
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild( renderer.domElement );
-    
     
     //Set up camera
     const fov = 75;
@@ -47,14 +43,7 @@ function main(){
 	  sound.play();
     });
 
-
-    //camera.position.z = 100
     camera.lookAt(new THREE.Vector3(0,player.height,0)); 
-    console.log(aspect);
-    //camera.position.set(0,1.8,-5);
-  
-    //controls.update();
-   
     //Add orbit controls for better view
     const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -71,30 +60,9 @@ function main(){
   //   'img/negz.jpg',
   //  ])
 
-    //Add Fog
-    
-    //scene.fog = new THREE.FogExp2(0xDFE9F3, 0.06);
-    //scene.background = new THREE.Color(color);
-
-    //Add directionan light
-    // const light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
-    // light.position.set( 0, 1, 0 ); //default; light shining from top
-    // light.castShadow = true; // default false
-    // scene.add( light );
-
-    //Add light
-    //const ambient = new THREE.AmbientLight(0x242326);
     const ambient = new THREE.AmbientLight(0xffffff,0.2);
 
     scene.add(ambient);
-
-    //New Point Light
-    let light = new THREE.PointLight(0xffffff,0.8,18);
-    light.position.set(-6,10,-0);
-    light.castShadow = true;
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 25;
-    //scene.add(light);
 
     //Left lamp light
     let lampLight = new THREE.PointLight(0xffffff,0.8,4);
@@ -111,45 +79,27 @@ function main(){
     lampLightRight.shadow.camera.near = 0.1;
     lampLightRight.shadow.camera.far = 25;
     scene.add(lampLightRight);
+
     //Add flash
     let flash = new THREE.PointLight(0x06d89,30,500,2);
     flash.position.set(100,250,100);
-    //flash.position.set(200,300,100);
     flash.castShadow = true;
     flash.shadow.camera.near = 0.1;
     flash.shadow.camera.far = 500;
-    //flash.power = 50;
-    console.log(flash.power);
-    //scene.add(flash);
-
-    //Light to represent moon but doesnt look good
-    //  const directionalLight = new THREE.DirectionalLight(0xF52A96);
-    //  directionalLight.castShadow = true; 
-    // directionalLight.position.set(-5,3,0);
-    // directionalLight.target.position.set(0,0,0);
-    // scene.add(directionalLight);
-    // scene.add(directionalLight.target);
-
-    //Add some fog
-    //scene.fog = new THREE.Fog(0xDFE9F3, 0.06, 500.0);
+    scene.add(flash);
 
     //Loading slender man
-    
-     
-        let slender = new GLTFLoader();
-        let obj;
-        slender.load('scene.gltf', function (gltf){
-        obj = gltf.scene;
-        obj.scale.set(0.0030,0.0030,0.0030);
-        //obj.rotation.y += Math.PI /2;
-        console.log(obj.scale)
-     
-         scene.add(gltf.scene);
+    let slender = new GLTFLoader();
+    let obj;
+    slender.load('scene.gltf', function (gltf){
+    obj = gltf.scene;
+    obj.scale.set(0.0030,0.0030,0.0030);
+    //obj.rotation.y += Math.PI /2;
+    console.log(obj.scale)
+  
+      scene.add(gltf.scene);
     })
   
-
-    
-    
   //Modelos loading
   let models = {
     tree: {
@@ -601,50 +551,50 @@ async function loadFenceBorder(){
   const roof = new THREE.Mesh(
   new THREE.ConeBufferGeometry(3.5, 1, 4),
   new THREE.MeshPhongMaterial({ color: '#b35f45', map: roofTexture })
-)
-roof.rotation.y = Math.PI * 0.25
-roof.position.y = 2.5 + 0.5
-roof.receiveShadow = true;
-house.add(roof)
+  )
+  roof.rotation.y = Math.PI * 0.25
+  roof.position.y = 2.5 + 0.5
+  roof.receiveShadow = true;
+  house.add(roof)
 
-// Door
-let test = new THREE.TextureLoader().load('img/negx.png')
-let doorTexture = new THREE.TextureLoader().load('img/door.jpg');
-const door = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(2, 2),
-  new THREE.MeshPhongMaterial({ color: '#aa7b7b', map:doorTexture })
-)
-door.position.y = 0.9
-door.position.z = 2 + 0.01
-door.castShadow = true;
-door.receiveShadow = true;
-house.add(door)
+  // Door
+  let test = new THREE.TextureLoader().load('img/negx.png')
+  let doorTexture = new THREE.TextureLoader().load('img/door.jpg');
+  const door = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(2, 2),
+    new THREE.MeshPhongMaterial({ color: '#aa7b7b', map:doorTexture })
+  )
+  door.position.y = 0.9
+  door.position.z = 2 + 0.01
+  door.castShadow = true;
+  door.receiveShadow = true;
+  house.add(door)
 
-//Window
-let glassTexture = new THREE.TextureLoader().load('img/glass.png')
-const glass = new THREE.Mesh(
-  new THREE.PlaneBufferGeometry(1.5,1.5),
-  new THREE.MeshPhongMaterial({color: '#aa7b7b', map: glassTexture})
-)
+  //Window
+  let glassTexture = new THREE.TextureLoader().load('img/glass.png')
+  const glass = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(1.5,1.5),
+    new THREE.MeshPhongMaterial({color: '#aa7b7b', map: glassTexture})
+  )
 
-glass.rotation.y += Math.PI / 2
-glass.position.x = 2.05
-glass.position.z= 0;
-glass.position.y = 1.5;
-glass.castShadow = true;
-glass.receiveShadow = true;
-house.add(glass);
+  glass.rotation.y += Math.PI / 2
+  glass.position.x = 2.05
+  glass.position.z= 0;
+  glass.position.y = 1.5;
+  glass.castShadow = true;
+  glass.receiveShadow = true;
+  house.add(glass);
 
-// Graves
-const graves = new THREE.Group()
-scene.add(graves)
+  // Graves
+  const graves = new THREE.Group()
+  scene.add(graves)
 
-let stoneTexture = new THREE.TextureLoader().load('img/stone.png')
-const graveGeometry = new THREE.BoxBufferGeometry(0.6, 0.8, 0.2)
-const graveMaterial = new THREE.MeshPhongMaterial({  map: stoneTexture })
+  let stoneTexture = new THREE.TextureLoader().load('img/stone.png')
+  const graveGeometry = new THREE.BoxBufferGeometry(0.6, 0.8, 0.2)
+  const graveMaterial = new THREE.MeshPhongMaterial({  map: stoneTexture })
 
-for(let i = 0; i < 50; i++)
-{
+  for(let i = 0; i < 50; i++)
+  {
     const angle = Math.random() * Math.PI * 2 
     const radius = 3 + Math.random() * 6      
     const x = Math.cos(angle) * radius        
@@ -668,64 +618,59 @@ for(let i = 0; i < 50; i++)
     } else {
       graves.add(grave)
     }
-   
-}
-//Cloud 
-let loader = new THREE.TextureLoader();
-loader.load('img/cloud.jpg', (texture) => {
-  const cloudGeo = new THREE.PlaneBufferGeometry(400,400);
-  const cloudMaterial = new THREE.MeshLambertMaterial({
-    map: texture,
-    fog:false,
-    transparent:true
-    
-    
-    
+   }
+
+  //Cloud 
+  let loader = new THREE.TextureLoader();
+  loader.load('img/cloud.jpg', (texture) => {
+    const cloudGeo = new THREE.PlaneBufferGeometry(400,400);
+    const cloudMaterial = new THREE.MeshLambertMaterial({
+      map: texture,
+      fog:false,
+      transparent:true
+    })
+    for (let i=0; i < 25; i++){
+      let cloud = new THREE.Mesh(cloudGeo,cloudMaterial);
+      cloud.position.set(
+        Math.random() * 800 -400,
+        300,
+        Math.random() * 500 - 400
+      );
+      cloud.rotation.x = 1.16;
+      cloud.rotation.y = -0.12;
+      cloud.rotation.z = Math.random() * 360;
+      cloud.material.opacity = 0.6;
+      particles.push(cloud);
+      scene.add(cloud);
+    }
   })
-  for (let i=0; i < 25; i++){
-    let cloud = new THREE.Mesh(cloudGeo,cloudMaterial);
-    cloud.position.set(
-      Math.random() * 800 -400,
-      300,
-      Math.random() * 500 - 400
-    );
-    cloud.rotation.x = 1.16;
-    cloud.rotation.y = -0.12;
-    cloud.rotation.z = Math.random() * 360;
-    cloud.material.opacity = 0.6;
-    particles.push(cloud);
-    scene.add(cloud);
+
+  //Rain 
+  let rain;
+  const vertex = new THREE.Vector3();
+  const geometry = new THREE.BufferGeometry();
+  const vertices = [];
+  for (let i = 0; i < 10000; i++) {
+      vertices.push(
+          Math.random() * 20 - 10,
+          Math.random() * 30,
+          Math.random() * 20 - 10
+      );
   }
-})
 
-//Rain 
-let rain;
-const vertex = new THREE.Vector3();
-//const rainSprite = new THREE.TextureLoader().load('img/disc.png');
-const geometry = new THREE.BufferGeometry();
-const vertices = [];
-for (let i = 0; i < 10000; i++) {
-    vertices.push(
-        Math.random() * 20 - 10,
-        Math.random() * 30,
-        Math.random() * 20 - 10
-    );
-}
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  const material = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.01,
+      transparent: true
+  });
 
-const material = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.02,
-    
-    transparent: true
-});
-
-rain = new THREE.Points(geometry, material);
-//scene.add(rain);
+  rain = new THREE.Points(geometry, material);
+  scene.add(rain);
 
 
-function rainVelocity() {
+  function rainVelocity() {
 
   var positionAttribute = rain.geometry.getAttribute('position');
 
@@ -752,27 +697,22 @@ function rainVelocity() {
 
   positionAttribute.needsUpdate = true;
 
-}
+  }
    
-    function keyDown(event){
-      keyboard[event.keyCode] = true;
-    }
+  function keyDown(event){
+    keyboard[event.keyCode] = true;
+  }
 
-    function keyUp(event){
-      keyboard[event.keyCode] = false
-    }
+  function keyUp(event){
+    keyboard[event.keyCode] = false
+  }
   
-    
-
     function animate() {
       requestAnimationFrame( animate );
-
-
-      
       //Randomly rotate slender
       if(obj != null){
         obj.rotation.y += 0.01;
-         // //Left and right movement inside house
+      // //Left and right movement inside house
       if(!maxRight){
         obj.position.x += 0.01;
         if(obj.position.x >=1.8){
@@ -786,59 +726,56 @@ function rainVelocity() {
           maxRight = false;
         }
       }
-
-    
       }
       
-      
-     
-
-      
-
       //Animate clouds
-      console.log("clouds");
       particles.forEach((p) => {
         p.rotation.z += 0.002;
       })
 
       //Flash animation
-      // if(Math.random() > 0.95 || flash.power > 100){
-      //   //console.log("Luz");
-      //   if (flash.power < 100){
-      //     flash.position.set(
-      //       Math.random() * 400,
-      //       300 + Math.random() * 200,
-      //       100
-      //     )
-      //   };
-      //   flash.power = 50 + Math.random() * 1000;
-      // }
-      if(keyboard[87]){ // W key
+      if(Math.random() > 0.95 || flash.power > 100){
+        if (flash.power < 100){
+          flash.position.set(
+            Math.random() * 400,
+            300 + Math.random() * 200,
+            100
+          )
+        };
+        flash.power = 50 + Math.random() * 1000;
+      }
+
+
+      if(keyboard[83]){ // W key
         camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
         camera.position.z -= -Math.cos(camera.rotation.y) * player.speed;
       }
-      if(keyboard[83]){ // S key
+      if(keyboard[87]){ // S key
         camera.position.x += Math.sin(camera.rotation.y) * player.speed;
         camera.position.z += -Math.cos(camera.rotation.y) * player.speed;
       }
-      if(keyboard[65]){ // A key
+      if(keyboard[68]){ // A key
         
         camera.position.x += Math.sin(camera.rotation.y + Math.PI/2) * player.speed;
         camera.position.z += -Math.cos(camera.rotation.y + Math.PI/2) * player.speed;
       }
-      if(keyboard[68]){ // D key
+      if(keyboard[65]){ // D key
         camera.position.x += Math.sin(camera.rotation.y - Math.PI/2) * player.speed;
         camera.position.z += -Math.cos(camera.rotation.y - Math.PI/2) * player.speed;
       }
-      if(keyboard[37]){
-        console.log("");
-        camera.rotation.y -= Math.PI * 0.11;
-      }
       if(keyboard[39]){
-        camera.rotation.y += Math.PI * 0.01;
+        camera.rotation.y -= Math.PI * 0.001;
       }
-  
-     //rainVelocity();
+      if(keyboard[37]){
+        camera.rotation.y += Math.PI * 0.001;
+      }
+      if(keyboard[38]){
+        camera.rotation.x += Math.PI * 0.001;
+      }
+      if(keyboard[40]){
+        camera.rotation.x -= Math.PI * 0.001;
+      }
+     rainVelocity();
       renderer.render( scene, camera );
     }
     animate();
