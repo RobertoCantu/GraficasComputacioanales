@@ -25,3 +25,5 @@ Modelos 3d fueron obtenidos de https://kenney.nl/
 
 Musica de ambiente es de Brad McBride https://www.youtube.com/watch?v=1DE3e_hkBFo&t=2200s&ab_channel=BradMcBride
 
+Modelo de slender man hecho por leozinhoblox obtenido de https://sketchfab.com/3d-models/slender-the-arrival-slender-man-model-fixed-91fb64afeb0f4799974ef8fb628f9407
+
