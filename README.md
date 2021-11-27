@@ -30,6 +30,8 @@ se agrego una point light en la parte alta de la escena para simular relampagaos
 
 Para la animacion se agrego movimeinto de las nubes, relampagos, lluvia y movimiento del slenderman dentro de la casa. 
 
+Para la musica se utilizo un fondo de una noche muy tormentosa. 
+
 
 ## Evidencia 
 ![image](https://user-images.githubusercontent.com/47834091/143689122-4eed5a4a-aafe-4d50-8174-20aa0f6513d2.png)
