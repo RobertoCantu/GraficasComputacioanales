@@ -10,8 +10,26 @@ al parecer no funciona en google chrome
 2 Opcion
 Utilizar la extension Live Server de Visual Studio para poder abrir el index.html en el navegador
 
-## Controles
+## Controles para el movimiento
 Soporta movimiento WASD y flechas del teclado para girar alrededor
+
+## Primitivas,luces y sombras
+
+La construccion de la cabana fue elaborada por puras formas primitivas tales como un cono para la parte del techo, un cubo para simiular las paredes y diferentes planos para poder crear la ventana y la puerta, finalmente se agregaron texturas que le dieron vida a esas figuras primitivas. 
+
+Las lapidas tambien se hicieron en base a figuras primitvas en este caso cubos.
+
+El cielo y el piso tambien se crearon con un plano aunque en el caso del cielo es la combinacion de muchos planos para simular las nubes.
+
+Las demas figuras que aparecen en la escena fueron obtenidas de la pagina Kenney tales como arboles, piedras, tierra, postes de luz y barandales.
+
+El slenderman es un modelo hecho por leozinhoblox.
+
+En cuestion a la parte de luces y sombras se utilizo una luz ambiental que afectara a todos los objetos y se agregaron luces Point a las lamparas. Tambien
+se agrego una point light en la parte alta de la escena para simular relampagaos mediante una animacion. Las sombras se activaron en los objetos y se pueden observar cada vez que hay un relampago.
+
+Para la animacion se agrego movimeinto de las nubes, relampagos, lluvia y movimiento del slenderman dentro de la casa. 
+
 
 ## Evidencia 
 ![image](https://user-images.githubusercontent.com/47834091/143689122-4eed5a4a-aafe-4d50-8174-20aa0f6513d2.png)
