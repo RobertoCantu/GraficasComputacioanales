@@ -7,7 +7,7 @@ Escena creada con la libreria Three.js, el objetivo de la escena es dar la senca
 Abrir la siguiente github page en Firefox https://robertocantu.github.io/GraficasComputacionales/ProyectoFinal/index.html
 al parecer no funciona en google chrome
 
-2 Opcion
+### 2 Opcion
 Utilizar la extension Live Server de Visual Studio para poder abrir el index.html en el navegador
 
 ## Controles para el movimiento
