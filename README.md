@@ -10,6 +10,9 @@ al parecer no funciona en google chrome
 2 Opcion
 Utilizar la extension Live Server de Visual Studio para poder abrir el index.html en el navegador
 
+## Controles
+Soporta movimiento WASD y flechas del teclado para girar alrededor
+
 ## Referencias
 Modelos 3d fueron obtenidos de https://kenney.nl/
 
