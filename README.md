@@ -3,7 +3,7 @@
 Escena creada con la libreria Three.js, el objetivo de la escena es dar la sencacion de soledad y aislaminento de la sociedad en una tormentosa noche, meintras recorres tranqulamente tu hogar por fuera. Disfrutrar de una noche de lluvia solo no tiene nada de raro, pero de lo que si deberias preocuparte es que no estas solo en esta escena 🎃🎃🎃
 
 ## Instrucciones
-1 Opcion 
+### 1 Opcion 
 Abrir la siguiente github page en Firefox https://robertocantu.github.io/GraficasComputacionales/ProyectoFinal/index.html
 al parecer no funciona en google chrome
 
